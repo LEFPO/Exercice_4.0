@@ -1,0 +1,13 @@
+be\iramps\ue1103\mvc\Controller\Controller$3.class
+be\iramps\ue1103\mvc\View\PrimaryView.class
+be\iramps\ue1103\mvc\Model\DAL\Sections\SectionDAO.class
+be\iramps\ue1103\mvc\App.class
+be\iramps\ue1103\mvc\Model\BL\Section.class
+module-info.class
+be\iramps\ue1103\mvc\Model\PrimaryModel.class
+be\iramps\ue1103\mvc\Controller\Controller$1.class
+be\iramps\ue1103\mvc\Model\DAL\Sections\ISectionDAO.class
+be\iramps\ue1103\mvc\Controller\Controller.class
+be\iramps\ue1103\mvc\View\IView.class
+be\iramps\ue1103\mvc\Controller\Controller$2.class
+be\iramps\ue1103\mvc\Model\IModel.class

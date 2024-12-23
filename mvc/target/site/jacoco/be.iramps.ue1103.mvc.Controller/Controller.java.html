@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mvc</a> &gt; <a href="index.source.html" class="el_package">be.iramps.ue1103.mvc.Controller</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package be.iramps.ue1103.mvc.Controller;
+
+import java.beans.PropertyChangeListener;
+import java.security.InvalidParameterException;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import be.iramps.ue1103.mvc.Model.IModel;
+import be.iramps.ue1103.mvc.Model.PrimaryModel;
+import be.iramps.ue1103.mvc.View.IView;
+import be.iramps.ue1103.mvc.View.PrimaryView;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.WindowEvent;
+
+<span class="nc" id="L17">public class Controller {</span>
+    private IModel model;
+    private IView view;
+
+    public void initialize(){
+<span class="nc" id="L22">        this.model = new PrimaryModel();</span>
+<span class="nc" id="L23">        this.view = new PrimaryView();</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (PropertyChangeListener.class.isAssignableFrom(view.getClass())){</span>
+<span class="nc" id="L25">            PropertyChangeListener pcl = (PropertyChangeListener) view;            </span>
+<span class="nc" id="L26">            model.addPropertyChangeListener(pcl);</span>
+        }
+<span class="nc" id="L28">        view.setController(this);</span>
+<span class="nc" id="L29">    }</span>
+
+    public void start(){
+<span class="nc" id="L32">        this.view.launchApp();</span>
+<span class="nc" id="L33">    }</span>
+
+    public EventHandler&lt;ActionEvent&gt; generateEventHandlerAction(String action, Supplier&lt;String[]&gt; params){    
+<span class="nc" id="L36">        Consumer&lt;String[]&gt; function = this.generateConsumer(action);        </span>
+<span class="nc" id="L37">        return new EventHandler&lt;ActionEvent&gt;() {</span>
+            @Override
+            public void handle(ActionEvent arg0) {
+<span class="nc" id="L40">                function.accept(params.get());;</span>
+<span class="nc" id="L41">            }</span>
+            
+        };
+    }
+
+    public EventHandler&lt;MouseEvent&gt; generateEventHandlerMouse(String action, Supplier&lt;String[]&gt; params){    
+<span class="nc" id="L47">        Consumer&lt;String[]&gt; function = this.generateConsumer(action);        </span>
+<span class="nc" id="L48">        return new EventHandler&lt;MouseEvent&gt;() {</span>
+            @Override
+            public void handle(MouseEvent arg0) {
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (arg0.getClickCount() == 2 ){</span>
+<span class="nc" id="L52">                    function.accept(params.get());</span>
+                }
+<span class="nc" id="L54">            }</span>
+            
+        };
+    }
+
+    public EventHandler&lt;WindowEvent&gt; generateCloseEvent(){
+<span class="nc" id="L60">        return new EventHandler&lt;WindowEvent&gt;() {</span>
+            @Override
+            public void handle(WindowEvent t) {
+<span class="nc" id="L63">                stop();</span>
+<span class="nc" id="L64">                System.exit(0);</span>
+<span class="nc" id="L65">            }</span>
+        };
+    }
+
+    private Consumer&lt;String[]&gt; generateConsumer(String action){
+        Consumer&lt;String[]&gt; t;
+<span class="nc bnc" id="L71" title="All 7 branches missed.">        switch (action) {</span>
+            case &quot;show-sections&quot;:
+<span class="nc" id="L73">                t = (x) -&gt; this.showAllSections();</span>
+<span class="nc" id="L74">                break;                </span>
+            case &quot;show-section&quot;:
+<span class="nc" id="L76">                t = (x) -&gt; this.showSections(x[0]);</span>
+<span class="nc" id="L77">                break;</span>
+            case &quot;add-section&quot;:
+<span class="nc" id="L79">                t = (x) -&gt; this.view.addNewSection();</span>
+<span class="nc" id="L80">                break;</span>
+            case &quot;insert-section&quot;:
+<span class="nc" id="L82">                t = (x) -&gt; this.insertSection(x[0]);</span>
+<span class="nc" id="L83">                break;</span>
+            case &quot;update-section&quot;:
+<span class="nc" id="L85">                t = (x) -&gt; this.updateSection(x[0], x[1]);</span>
+<span class="nc" id="L86">                break;</span>
+            case &quot;delete-section&quot;:
+<span class="nc" id="L88">                t = (x) -&gt; this.deleteSection(x[0]);</span>
+<span class="nc" id="L89">                break;        </span>
+            default:
+<span class="nc" id="L91">                throw new InvalidParameterException(action + &quot; n'existe pas.&quot;);</span>
+        }
+<span class="nc" id="L93">        return t;</span>
+    }
+
+    public void setModel(IModel model){
+<span class="nc" id="L97">        this.model = model;</span>
+<span class="nc" id="L98">    }</span>
+
+    public void setView(IView view){
+<span class="nc" id="L101">        this.view = view;</span>
+<span class="nc" id="L102">    }</span>
+
+    public void showAllSections(){
+<span class="nc" id="L105">        this.model.getAllSection();</span>
+<span class="nc" id="L106">    }</span>
+
+    public void showSections(String sectionName){
+<span class="nc" id="L109">        this.model.getSection(sectionName);</span>
+<span class="nc" id="L110">    }</span>
+
+    public void deleteSection(String id){
+<span class="nc" id="L113">        this.model.deleteSection(id);</span>
+<span class="nc" id="L114">    }</span>
+
+    public void updateSection(String id, String nom){
+<span class="nc" id="L117">        this.model.updateSection(id, nom);</span>
+<span class="nc" id="L118">    }</span>
+
+    public void insertSection(String nom){
+<span class="nc" id="L121">        this.model.insertSection(nom);</span>
+<span class="nc" id="L122">    }</span>
+
+    public void stop(){
+<span class="nc" id="L125">        this.model.close();        </span>
+<span class="nc" id="L126">        this.view.stopApp();</span>
+<span class="nc" id="L127">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+mvc,be.iramps.ue1103.mvc,App,12,0,0,0,5,0,2,0,2,0
+mvc,be.iramps.ue1103.mvc.Model.DAL.Sections,SectionDAO,272,0,16,0,96,0,15,0,7,0
+mvc,be.iramps.ue1103.mvc.Model.BL,Section,19,0,0,0,8,0,4,0,4,0
+mvc,be.iramps.ue1103.mvc.View,PrimaryView,487,0,7,0,87,0,22,0,18,0
+mvc,be.iramps.ue1103.mvc.Model,PrimaryModel,117,0,2,0,32,0,10,0,9,0
+mvc,be.iramps.ue1103.mvc.Controller,Controller.new EventHandler() {...},12,0,0,0,4,0,2,0,2,0
+mvc,be.iramps.ue1103.mvc.Controller,Controller.new EventHandler() {...},24,0,2,0,4,0,3,0,2,0
+mvc,be.iramps.ue1103.mvc.Controller,Controller.new EventHandler() {...},20,0,0,0,3,0,2,0,2,0
+mvc,be.iramps.ue1103.mvc.Controller,Controller,177,0,9,0,47,0,28,0,21,0

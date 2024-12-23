@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SectionDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mvc</a> &gt; <a href="index.source.html" class="el_package">be.iramps.ue1103.mvc.Model.DAL.Sections</a> &gt; <span class="el_source">SectionDAO.java</span></div><h1>SectionDAO.java</h1><pre class="source lang-java linenums">package be.iramps.ue1103.mvc.Model.DAL.Sections;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import be.iramps.ue1103.mvc.Model.BL.Section;
+
+public class SectionDAO implements ISectionDAO {
+    Connection connexion;
+    PreparedStatement insertSection;   
+    PreparedStatement updateSection;
+    PreparedStatement deleteSection;
+    PreparedStatement getIDSection;
+    PreparedStatement getSections;
+
+
+<span class="nc" id="L22">    public SectionDAO(String url, String user, String password) {</span>
+        try {
+<span class="nc" id="L24">            this.connexion = DriverManager.getConnection(url, user, password);</span>
+<span class="nc" id="L25">            Statement statement = connexion.createStatement();</span>
+            try {
+<span class="nc" id="L27">                statement.executeUpdate(&quot;CREATE TABLE IF NOT EXISTS Section (id SERIAL PRIMARY KEY, nom VARCHAR(30))&quot;);</span>
+<span class="nc" id="L28">            } catch (SQLException e) {</span>
+                // La table existe déjà. Log pour le cas où.
+<span class="nc" id="L30">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L31">            }</span>
+<span class="nc" id="L32">            statement.close();</span>
+<span class="nc" id="L33">            this.insertSection = this.connexion.prepareStatement(&quot;INSERT into Section (nom) VALUES (?)&quot;);</span>
+<span class="nc" id="L34">            this.updateSection = this.connexion.prepareStatement(&quot;UPDATE Section SET nom=? WHERE id=?&quot;);</span>
+<span class="nc" id="L35">            this.deleteSection = this.connexion.prepareStatement(&quot;DELETE FROM Section WHERE id=?&quot;);</span>
+<span class="nc" id="L36">            this.getIDSection = this.connexion.prepareStatement(&quot;SELECT id FROM Section WHERE nom=?&quot;);</span>
+<span class="nc" id="L37">            this.getSections = this.connexion.prepareStatement(&quot;SELECT id,nom FROM Section&quot;);</span>
+
+            ;
+<span class="nc" id="L40">        } catch (SQLException e) {</span>
+<span class="nc" id="L41">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L42">        }</span>
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public boolean close() {
+<span class="nc" id="L47">        boolean ret = true;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (this.updateSection != null) {</span>
+            try {
+<span class="nc" id="L50">                this.updateSection.close();</span>
+<span class="nc" id="L51">            } catch (SQLException e) {</span>
+<span class="nc" id="L52">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L53">                ret = false;</span>
+<span class="nc" id="L54">            }</span>
+        }
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (this.getIDSection != null) {</span>
+            try {
+<span class="nc" id="L59">                this.getIDSection.close();</span>
+<span class="nc" id="L60">            } catch (SQLException e) {</span>
+<span class="nc" id="L61">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L62">                ret = false;</span>
+<span class="nc" id="L63">            }</span>
+        }
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (this.deleteSection != null) {</span>
+            try {
+<span class="nc" id="L67">                this.deleteSection.close();</span>
+<span class="nc" id="L68">            } catch (SQLException e) {</span>
+<span class="nc" id="L69">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L70">                ret = false;</span>
+<span class="nc" id="L71">            }</span>
+        }
+        
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (this.getSections != null) {</span>
+            try {
+<span class="nc" id="L76">                this.getSections.close();</span>
+<span class="nc" id="L77">            } catch (SQLException e) {</span>
+<span class="nc" id="L78">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L79">                ret = false;</span>
+<span class="nc" id="L80">            }</span>
+        }
+        
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (this.insertSection != null) {</span>
+            try {
+<span class="nc" id="L85">                this.insertSection.close();</span>
+<span class="nc" id="L86">            } catch (SQLException e) {</span>
+<span class="nc" id="L87">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L88">                ret = false;</span>
+<span class="nc" id="L89">            }</span>
+        }
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (this.connexion != null) {</span>
+            try {
+<span class="nc" id="L93">                this.connexion.close();</span>
+<span class="nc" id="L94">            } catch (SQLException e) {</span>
+<span class="nc" id="L95">                System.out.println(e.getMessage());</span>
+<span class="nc" id="L96">                ret = false;</span>
+<span class="nc" id="L97">            }</span>
+        }
+
+<span class="nc" id="L100">        return ret;</span>
+    }
+
+    @Override
+    public ArrayList&lt;Section&gt; getSections() {
+<span class="nc" id="L105">        ArrayList&lt;Section&gt; listeSection = new ArrayList&lt;Section&gt;();</span>
+        try {
+<span class="nc" id="L107">            ResultSet set = this.getSections.executeQuery();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            while (set.next()) {</span>
+<span class="nc" id="L109">                Section section = new Section(set.getInt(1), set.getString(2));</span>
+<span class="nc" id="L110">                listeSection.add(section);</span>
+<span class="nc" id="L111">            }</span>
+<span class="nc" id="L112">        } catch (SQLException e) {</span>
+<span class="nc" id="L113">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L114">        }</span>
+<span class="nc" id="L115">        return listeSection;</span>
+
+    }
+
+    @Override
+    public int getIDSection(String nom) {
+<span class="nc" id="L121">        int id = -1;</span>
+        try {
+<span class="nc" id="L123">            this.getIDSection.setString(1, nom);</span>
+<span class="nc" id="L124">            ResultSet set = this.getIDSection.executeQuery();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            while (set.next()) {</span>
+<span class="nc" id="L126">                id = set.getInt(1);</span>
+            }
+<span class="nc" id="L128">        } catch (SQLException e) {</span>
+<span class="nc" id="L129">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L130">        }</span>
+
+<span class="nc" id="L132">        return id;</span>
+    }
+
+    @Override
+    public boolean updateSection(int id, String nom) {
+        try {        
+<span class="nc" id="L138">            this.updateSection.setString(1, nom);</span>
+<span class="nc" id="L139">            this.updateSection.setInt(2, id);    </span>
+<span class="nc" id="L140">            this.updateSection.executeUpdate();</span>
+<span class="nc" id="L141">        } catch (SQLException e) {</span>
+<span class="nc" id="L142">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L143">            return false;</span>
+<span class="nc" id="L144">        }</span>
+<span class="nc" id="L145">        return true;</span>
+    }
+
+    @Override
+    public boolean deleteSection(int id) {
+        try {
+<span class="nc" id="L151">            this.deleteSection.setInt(1, id);</span>
+<span class="nc" id="L152">            this.deleteSection.execute();</span>
+<span class="nc" id="L153">        } catch (SQLException e) {</span>
+<span class="nc" id="L154">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L155">            return false;</span>
+<span class="nc" id="L156">        }</span>
+<span class="nc" id="L157">        return true;</span>
+    }
+
+    @Override
+    public boolean addSection(String nom) {
+        try {
+<span class="nc" id="L163">            this.insertSection.setString(1, nom);</span>
+<span class="nc" id="L164">            this.insertSection.executeUpdate();</span>
+<span class="nc" id="L165">        } catch (SQLException e) {</span>
+<span class="nc" id="L166">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L167">            return false;</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">        return true;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
